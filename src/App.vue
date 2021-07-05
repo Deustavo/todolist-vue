@@ -10,7 +10,11 @@
         </div>
       </form>
     </div>
-    <div class="container-todo-list">
+    <div v-if="todos.length < 1" class="empty-state">
+      <img src="@/assets/cart.png" />
+      <span>Escreva a cima o nome dos itens que deseja adicionar em sua lista</span>
+    </div>
+    <div v-else class="container-todo-list">
       <todo
         v-for="t in todos"
         :key="t.id"
@@ -97,12 +101,27 @@ export default {
     max-height: calc(100vh);
     overflow: auto;
   }
+  .empty-state {
+    margin-top: 80px;
+    width: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .empty-state img {
+    width: 140px;
+    margin-bottom: 32px;
+  }
   @media only screen and (max-width: 500px) {
     .container-input, .container-todo-list {
       width: 90vw;
     }
+    .empty-state {
+      width: 70vw;
+    }
     .title-page {
-      font-size: 40px;
+      font-size: 10vw;
     }
   }
 </style>

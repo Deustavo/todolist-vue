@@ -64,7 +64,4 @@ export default {
   .checked .todo-title, .checked .todo-arrow {
     color: #d0d0d0;
   }
-  button:hover {
-    transform: scale();
-  }
 </style>
