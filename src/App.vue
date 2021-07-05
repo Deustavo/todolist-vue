@@ -4,7 +4,7 @@
       <h1 class="title-page">Lista de compras</h1>
       <form @submit.prevent="addTodo(todo)">
         <div class="container-input">
-          <input type="text" v-model="todo.description" class="form-input" placeholder="Add todo" />
+          <input type="text" v-model="todo.description" class="form-input" placeholder="Nome do item" />
           <button v-if="todo.description" class="form-button" style="background-color: #5c5ce0">Adicionar</button>
           <button v-else class="form-button" disabled>Adicionar</button>
         </div>
