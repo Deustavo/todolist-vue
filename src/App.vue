@@ -1,12 +1,12 @@
 <template>
   <div class="container-page">
     <div class="container-header">
-      <img src="@/assets/trayLogo.png" alt="logo tay">
       <h1 class="title-page">Lista de compras</h1>
       <form @submit.prevent="addTodo(todo)">
         <div class="container-input">
           <input type="text" v-model="todo.description" class="form-input" placeholder="Add todo" />
-          <button class="form-button">Adicionar</button>
+          <button v-if="todo.description" class="form-button" style="background-color: #5c5ce0">Adicionar</button>
+          <button v-else class="form-button" disabled>Adicionar</button>
         </div>
       </form>
     </div>
@@ -84,7 +84,6 @@ export default {
   }
   .form-button {
     padding: 10px;
-    background-color: #5c5ce0;
     border-radius: 4px;
     border: none;
     cursor: pointer;
@@ -97,5 +96,13 @@ export default {
     margin: 8px 0px 40px 0px;
     max-height: calc(100vh);
     overflow: auto;
+  }
+  @media only screen and (max-width: 500px) {
+    .container-input, .container-todo-list {
+      width: 90vw;
+    }
+    .title-page {
+      font-size: 40px;
+    }
   }
 </style>

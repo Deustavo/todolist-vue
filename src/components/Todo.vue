@@ -32,14 +32,14 @@ export default {
 
 <style>
   .todo-item {
-    background-color: #f1f1f1;
+    background-color: #fff;
     color: black;
     display: flex;
     align-items: center;
     padding: 0px 16px;
     margin: 8px 0px;
-    width: 400px;
     border-radius: 8px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   }
   .todo-title {
     width: 240px;
@@ -63,5 +63,8 @@ export default {
   }
   .checked .todo-title, .checked .todo-arrow {
     color: #d0d0d0;
+  }
+  button:hover {
+    transform: scale();
   }
 </style>
