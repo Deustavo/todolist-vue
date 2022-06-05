@@ -1,0 +1,27 @@
+
+  .container-confirm-clear-background {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+  }
+  .container-confirm-clear {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .container-confirm-clear button {
+    margin: 0 8px;
+    min-width: 112px;
+  }
+  .title-confirm-clear {
+    width: fit-content;
+    color: white;
+    margin: 0 0 12px 0;
+  }

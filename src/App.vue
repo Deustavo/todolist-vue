@@ -15,7 +15,7 @@
       <span>Escreva a cima o nome dos itens que deseja adicionar em sua lista</span>
     </div>
     <div v-else class="container-todo-list">
-      <todo
+      <app-todo
         v-for="t in todos"
         :key="t.id"
         :todo="t"
@@ -23,14 +23,22 @@
         @remove="removeTodo"
       />
     </div>
+    <app-clear-list
+      :todos="this.todos"
+      @clear="clearTodos"
+    />
   </div>
 </template>
 
 <script>
-import Todo from './components/Todo'
+import AppTodo from './components/Todo'
+import AppClearList from './components/ClearList'
 
 export default {
-  components: { Todo },
+  components: {
+    AppTodo,
+    AppClearList
+  },
   data () {
     return {
       todos: [],
@@ -39,109 +47,93 @@ export default {
   },
 
   mounted () {
-    const LocalStorageToDoList = localStorage.getItem('ToDoList')
-
-    if (LocalStorageToDoList) {
-      this.todos = JSON.parse(LocalStorageToDoList)
-    }
+    this.getLocalstorageTodos()
   },
 
   methods: {
+    /**
+     * Recupera a todo list do localstorage
+     * @return {undefined}
+     */
+    getLocalstorageTodos () {
+      const LocalStorageTodos = localStorage.getItem('ToDoList')
+
+      if (LocalStorageTodos) {
+        this.todos = JSON.parse(LocalStorageTodos)
+      }
+    },
+
+    /**
+     * Atualiza o valor da lista no localStorage
+     * @param {array} todos valor da lista atualizado
+     * @return {undefined}
+     */
+    setTodosLocalStorage (todos) {
+      localStorage.setItem('ToDoList', JSON.stringify(todos))
+    },
+
+    /**
+     * Procura o item na lista pelo seu id
+     * @param {number} id
+     * @return {number}
+     */
+    findTodoById (id) {
+      return this.todos.findIndex(item => item.id === id)
+    },
+
+    /**
+     * Adiciona um item a lista de compras
+     * @param {object} todo informações do item
+     * @return {undefined}
+     */
     addTodo (todo) {
       todo.id = Date.now()
       this.todos.push(todo)
       this.todo = { checked: false }
-      console.log(this.todos)
-      localStorage.setItem('ToDoList', JSON.stringify(this.todos))
+      this.setTodosLocalStorage(this.todos)
     },
+
+    /**
+     * Inverte o valor status do item
+     * @param {object} todo informações do item
+     * @return {undefined}
+     */
     toggleTodo (todo) {
-      const index = this.todos.findIndex(item => item.id === todo.id)
+      const index = this.findTodoById(todo.id)
+
       if (index > -1) {
         const checked = !this.todos[index].checked
-        // $set será usado para alterar o valor da array de forma segura, o primeiro parametro é a lista, o segundo o index do item na lista e o treceiro valor o que deseja atribuir
         this.$set(this.todos, index, { ...this.todos[index], checked })
-        localStorage.setItem('ToDoList', JSON.stringify(this.todos))
+        this.setTodosLocalStorage(this.todos)
       }
     },
+
+    /**
+     * Remove item da lista de todos
+     * @param {object} todo informações do item
+     * @return {undefined}
+     */
     removeTodo (todo) {
-      const index = this.todos.findIndex(item => item.id === todo.id)
+      const index = this.findTodoById(todo.id)
+
       if (index > -1) {
         this.$delete(this.todos, index)
-        localStorage.setItem('ToDoList', JSON.stringify(this.todos))
+        this.setTodosLocalStorage(this.todos)
       }
+    },
+
+    /**
+     * Limpa a lista de todos
+     * @return {undefined}
+     */
+    clearTodos () {
+      this.todos = []
+      this.setTodosLocalStorage(this.todos)
     }
   }
 }
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
-  .container-page {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
-    font-family: 'Raleway', sans-serif;
-    background-color: #121212;
-  }
-  .container-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    margin-top: 40px;
-  }
-  .container-header img {
-    max-width: 200px;
-  }
-  .container-input {
-    display: flex;
-    align-items: center;
-    width: 432px;
-  }
-  .form-input {
-    width: 100%;
-    padding: 8px;
-    margin-right: 8px;
-  }
-  .form-button {
-    padding: 10px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-  }
-  .title-page {
-    color: white;
-    font-size: 56px;
-    margin: 0px 0px 40px 0px;
-  }
-  .container-todo-list {
-    margin: 8px 0px 40px 0px;
-    max-height: calc(100vh);
-    overflow: auto;
-  }
-  .empty-state {
-    margin-top: 80px;
-    width: 360px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    color: white;
-  }
-  .empty-state img {
-    width: 140px;
-    margin-bottom: 32px;
-  }
-  @media only screen and (max-width: 500px) {
-    .container-input, .container-todo-list {
-      width: 90vw;
-    }
-    .empty-state {
-      width: 70vw;
-    }
-    .title-page {
-      font-size: 10vw;
-    }
-  }
+  @import './assets/style/app.css';
 </style>
