@@ -8,11 +8,17 @@
     margin: 8px 0px;
     border-radius: 8px;
     transition: all ease-in-out 300ms;
+    max-height: 120px;
   }
   .todo-title {
     width: 258px;
     word-break: break-all;
     margin-right: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* number of lines to show */
+    -webkit-box-orient: vertical;
   }
   .todo-options {
     width: min-content;
