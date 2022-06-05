@@ -4,9 +4,9 @@
       <h1 class="title-page">Lista de compras</h1>
       <form @submit.prevent="addTodo(todo)">
         <div class="container-input">
-          <input type="text" v-model="todo.description" class="form-input" placeholder="Nome do item" />
-          <button v-if="todo.description" class="form-button" style="background-color: rgb(92, 224, 92)">Adicionar</button>
-          <button v-else class="form-button" disabled>Adicionar</button>
+          <input type="text" v-model="todo.description" class="form-input" placeholder="Nome do item" maxlength="100"/>
+          <button class="form-button" style="background-color: rgb(92, 224, 92)">Adicionar</button>
+          <!-- <button v-else class="form-button" disabled>Adicionar</button> -->
         </div>
       </form>
     </div>
@@ -87,10 +87,12 @@ export default {
      * @return {undefined}
      */
     addTodo (todo) {
-      todo.id = Date.now()
-      this.todos.push(todo)
-      this.todo = { checked: false }
-      this.setTodosLocalStorage(this.todos)
+      if (todo?.description?.length > 0) {
+        todo.id = Date.now()
+        this.todos.push(todo)
+        this.todo = { checked: false }
+        this.setTodosLocalStorage(this.todos)
+      }
     },
 
     /**
