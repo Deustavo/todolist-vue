@@ -1,24 +1,45 @@
-# todo
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/48912186/172035656-7079662e-44c8-439e-8d03-45666b3d9363.png" />
+</div>
 
-## Project setup
+### Sobre
+
+Esse projeto foi criado para praticar controle de estado global de uma lista em Vue JS.
+
+### Funcionalidades
+
+| Adicionar itens |
+| --- |
+| ![adicionar](https://user-images.githubusercontent.com/48912186/172035874-a18818fc-6f03-499c-ac08-903aeee68962.gif) |
+
+| Marcar e desmarcar itens |
+| --- |
+| ![marcardesmarcar](https://user-images.githubusercontent.com/48912186/172035882-280b08c6-3885-48b7-8a38-dd0c645878ef.gif) |
+
+| Remover itens |
+| --- |
+| ![remover](https://user-images.githubusercontent.com/48912186/172035889-3f929caa-2d90-45c4-b739-a895e263fe5e.gif) |
+
+| Limpar lista |
+| --- |
+| ![limpar](https://user-images.githubusercontent.com/48912186/172035895-9d28ff24-3123-4bf7-a5e4-129f73c173f1.gif) |
+
+### Instalando dependencias
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### Compilando projeto
 ```
 yarn serve
 ```
 
-### Compiles and minifies for production
+### COmpilando projeto para produção
 ```
 yarn build
 ```
 
-### Lints and fixes files
+### Ajustes do lint
 ```
 yarn lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
