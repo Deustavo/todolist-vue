@@ -5,7 +5,7 @@
       <form @submit.prevent="addTodo(todo)">
         <div class="container-input">
           <input type="text" v-model="todo.description" class="form-input" placeholder="Nome do item" />
-          <button v-if="todo.description" class="form-button" style="background-color: #5c5ce0">Adicionar</button>
+          <button v-if="todo.description" class="form-button" style="background-color: rgb(92, 224, 92)">Adicionar</button>
           <button v-else class="form-button" disabled>Adicionar</button>
         </div>
       </form>
@@ -32,13 +32,27 @@ import Todo from './components/Todo'
 export default {
   components: { Todo },
   data () {
-    return { todos: [], todo: { checked: false } }
+    return {
+      todos: [],
+      todo: { checked: false }
+    }
   },
+
+  mounted () {
+    const LocalStorageToDoList = localStorage.getItem('ToDoList')
+
+    if (LocalStorageToDoList) {
+      this.todos = JSON.parse(LocalStorageToDoList)
+    }
+  },
+
   methods: {
     addTodo (todo) {
       todo.id = Date.now()
       this.todos.push(todo)
       this.todo = { checked: false }
+      console.log(this.todos)
+      localStorage.setItem('ToDoList', JSON.stringify(this.todos))
     },
     toggleTodo (todo) {
       const index = this.todos.findIndex(item => item.id === todo.id)
@@ -46,12 +60,14 @@ export default {
         const checked = !this.todos[index].checked
         // $set será usado para alterar o valor da array de forma segura, o primeiro parametro é a lista, o segundo o index do item na lista e o treceiro valor o que deseja atribuir
         this.$set(this.todos, index, { ...this.todos[index], checked })
+        localStorage.setItem('ToDoList', JSON.stringify(this.todos))
       }
     },
     removeTodo (todo) {
       const index = this.todos.findIndex(item => item.id === todo.id)
       if (index > -1) {
         this.$delete(this.todos, index)
+        localStorage.setItem('ToDoList', JSON.stringify(this.todos))
       }
     }
   }
@@ -66,6 +82,7 @@ export default {
     flex-direction: column;
     height: 100vh;
     font-family: 'Raleway', sans-serif;
+    background-color: #121212;
   }
   .container-header {
     display: flex;
@@ -85,6 +102,7 @@ export default {
   .form-input {
     width: 100%;
     padding: 8px;
+    margin-right: 8px;
   }
   .form-button {
     padding: 10px;
@@ -93,6 +111,7 @@ export default {
     cursor: pointer;
   }
   .title-page {
+    color: white;
     font-size: 56px;
     margin: 0px 0px 40px 0px;
   }
@@ -108,6 +127,7 @@ export default {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    color: white;
   }
   .empty-state img {
     width: 140px;

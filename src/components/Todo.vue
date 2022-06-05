@@ -14,6 +14,7 @@
       <button
         class="todo-button"
         style="background-color: #ff5959"
+        v-show="!todo.checked"
         @click="$emit('remove', todo)"
       >
         Remover
@@ -32,17 +33,17 @@ export default {
 
 <style>
   .todo-item {
-    background-color: #fff;
-    color: black;
+    background-color: #1d1d1d;
+    color: white;
     display: flex;
     align-items: center;
     padding: 0px 16px;
     margin: 8px 0px;
     border-radius: 8px;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    transition: all ease-in-out 300ms;
   }
   .todo-title {
-    width: 240px;
+    width: 258px;
     word-break: break-all;
     margin-right: 16px;
   }
@@ -59,9 +60,9 @@ export default {
     margin: 8px 0px;
   }
   .checked {
-    background-color: #e7ffe7;
+    background-color: #606c61;
   }
   .checked .todo-title, .checked .todo-arrow {
-    color: #d0d0d0;
+    color: rgb(92, 224, 92);
   }
 </style>
