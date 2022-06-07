@@ -4,7 +4,7 @@
     color: white;
     display: flex;
     align-items: center;
-    padding: 0px 16px;
+    padding: 0px 12px;
     margin: 8px 0px;
     border-radius: 8px;
     transition: all ease-in-out 300ms;
@@ -26,10 +26,11 @@
     -webkit-line-clamp: 4; /* number of lines to show */
     -webkit-box-orient: vertical;
     transition: all ease-in-out 300ms;
+    margin: 0px;
   }
   .todo-options {
     width: min-content;
-    margin: 16px 0px;
+    margin: 12px 0px;
     display: flex;
   }
   .todo-button {
@@ -42,7 +43,7 @@
     cursor: pointer;
     border-radius: 50%;
     border: none;
-    margin: 0px 0px 0px 16px;
+    margin: 0px 0px 0px 12px;
   }
   .checked {
     background-color: black;
@@ -57,9 +58,12 @@
   .large-card {
     flex-direction: column;
   }
+  .large-card .todo-text {
+    margin-top: 12px;
+  }
   .large-card .todo-options {
     width: 100%;
-    margin-top: 0px;
+    margin-top: 12px;
     justify-content: end;
   }
   @media only screen and (max-width: 500px) {

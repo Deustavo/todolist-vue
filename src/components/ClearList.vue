@@ -3,7 +3,7 @@
       <button
         v-show="this.todos.length > 0 && !confirmClear"
         class="form-button clear-button"
-        style="background-color: #ffc83d"
+        style="background-color: #24b5fa"
         @click="setConfirmClear(true)"
       >
         Limpar lista

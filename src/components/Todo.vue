@@ -11,6 +11,14 @@
     <div class="todo-options" :id="`todo-options${this.todo.id}`">
       <button
         class="todo-button"
+        style="background-color: #24b5fa; font-size: 16px"
+        v-show="!todo.checked"
+        @click="$emit('edit', todo)"
+      >
+        <font-awesome-icon icon="fa-solid fa-pencil" />
+      </button>
+      <button
+        class="todo-button"
         style="background-color: #f84748"
         v-show="!todo.checked"
         @click="$emit('remove', todo)"

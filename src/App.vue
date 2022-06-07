@@ -4,10 +4,16 @@
       <h1 class="title-page">Lista de compras</h1>
       <form @submit.prevent="addTodo(todo)">
         <div class="container-input">
-          <input type="text" v-model="todo.description" class="form-input" placeholder="Nome do item" maxlength="100"/>
+          <input
+            id="form-input"
+            class="form-input"
+            type="text"
+            placeholder="Nome do item" maxlength="100"
+            v-model="todo.description"
+          />
           <button
             class="form-button"
-            style="background-color: #5bcf67"
+            style="background-color: #24b5fa"
           >
             Adicionar
           </button>
@@ -16,7 +22,10 @@
     </div>
     <div v-if="todos.length < 1" class="empty-state">
       <img src="@/assets/cart.png" />
-      <span>Escreva a cima o nome dos itens que deseja adicionar em sua lista</span>
+      <span>
+        Escreva a cima o nome dos itens que
+        deseja adicionar em sua lista
+      </span>
     </div>
     <div v-else class="container-todo-list">
       <app-todo
@@ -25,6 +34,7 @@
         :todo="t"
         @toggle="toggleTodo"
         @remove="removeTodo"
+        @edit="editTodo"
       />
     </div>
     <app-clear-list
@@ -46,7 +56,10 @@ export default {
   data () {
     return {
       todos: [],
-      todo: { checked: false }
+      todo: {
+        description: '',
+        checked: false
+      }
     }
   },
 
@@ -126,6 +139,17 @@ export default {
         this.$delete(this.todos, index)
         this.setTodosLocalStorage(this.todos)
       }
+    },
+
+    /**
+     * Coloca o valor da descrição da todo no input
+     * @param {object} todo informações do item
+     * @return {undefined}
+     */
+    editTodo (localTodo) {
+      this.todo.description = localTodo.description
+      this.removeTodo(localTodo)
+      document.getElementById('form-input').focus()
     },
 
     /**
