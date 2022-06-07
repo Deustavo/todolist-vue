@@ -16,7 +16,7 @@
     </div>
     <div v-else class="container-todo-list">
       <app-todo
-        v-for="t in todos"
+        v-for="t in todos.slice().reverse()"
         :key="t.id"
         :todo="t"
         @toggle="toggleTodo"
