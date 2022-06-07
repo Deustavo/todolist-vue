@@ -104,7 +104,7 @@ export default {
      * @return {undefined}
      */
     addTodo (todo) {
-      if (todo?.description?.length > 0) {
+      if (todo?.description?.trimStart().length > 0) {
         todo.id = Date.now()
         this.todos.push(todo)
         this.todo = { checked: false }
