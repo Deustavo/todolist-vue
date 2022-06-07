@@ -3,6 +3,7 @@
       <button
         v-show="this.todos.length > 0 && !confirmClear"
         class="form-button clear-button"
+        style="background-color: #ffc83d"
         @click="setConfirmClear(true)"
       >
         Limpar lista
@@ -13,17 +14,17 @@
           <div>
             <button
               class="form-button"
-              style="background-color: rgb(92, 224, 92)"
-              @click="this.clearTodosAndCloseModal"
-            >
-              Limpar lista
-            </button>
-            <button
-              class="form-button"
-              style="background-color: #ff5959"
+              style="background-color: #f84748"
               @click="setConfirmClear(false)"
             >
               Cancelar
+            </button>
+            <button
+              class="form-button"
+              style="background-color: #5bcf67"
+              @click="this.clearTodosAndCloseModal"
+            >
+              Limpar lista
             </button>
           </div>
         </div>

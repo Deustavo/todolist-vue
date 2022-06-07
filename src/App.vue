@@ -5,8 +5,12 @@
       <form @submit.prevent="addTodo(todo)">
         <div class="container-input">
           <input type="text" v-model="todo.description" class="form-input" placeholder="Nome do item" maxlength="100"/>
-          <button class="form-button" style="background-color: rgb(92, 224, 92)">Adicionar</button>
-          <!-- <button v-else class="form-button" disabled>Adicionar</button> -->
+          <button
+            class="form-button"
+            style="background-color: #5bcf67"
+          >
+            Adicionar
+          </button>
         </div>
       </form>
     </div>

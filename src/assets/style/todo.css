@@ -25,6 +25,7 @@
     display: -webkit-box;
     -webkit-line-clamp: 4; /* number of lines to show */
     -webkit-box-orient: vertical;
+    transition: all ease-in-out 300ms;
   }
   .todo-options {
     width: min-content;
@@ -44,10 +45,14 @@
     margin: 0px 0px 0px 16px;
   }
   .checked {
-    background-color: #606c61;
+    background-color: black;
+  }
+  .checked .todo-title {
+   -webkit-text-decoration-line: line-through; /* Safari */
+   text-decoration-line: line-through; 
   }
   .checked .todo-title, .checked .todo-arrow {
-    color: rgb(92, 224, 92);
+    color: #607c3c
   }
   .large-card {
     flex-direction: column;
