@@ -40,9 +40,10 @@
     position: fixed;
     left: 2vw;
     /* transform: translateX(-50%); */
-    width: 100px;
+    width: 112px;
     border-radius: 50px;
     bottom: 20px;
+    font-weight: bold;
   }
   .title-page {
     color: white;

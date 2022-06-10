@@ -1,0 +1,19 @@
+.yellow-button {
+    box-shadow: rgb(225 200 61 / 12%) 0px 0px 12px, rgb(225 200 61 / 24%) 0px 0px 12px;
+    background-color: rgb(255 200 61 / 80%);
+}
+
+.green-button {
+    box-shadow: rgb(91 207 103 / 12%) 0px 0px 12px, rgb(91 207 103 / 24%) 0px 0px 12px;
+    background-color: rgb(91 207 103 / 80%);
+}
+
+.red-button {
+    box-shadow: rgb(248 71 72 / 12%) 0px 0px 12px, rgb(248 71 72 / 24%) 0px 0px 12px;
+    background-color: rgb(248 71 72 / 80%);
+}
+
+.blue-button {
+    box-shadow: rgb(36 181 250 / 12%) 0px 0px 12px, rgb(36 181 250 / 24%) 0px 0px 12px;
+    background-color: rgb(36 181 250 / 80%);
+}

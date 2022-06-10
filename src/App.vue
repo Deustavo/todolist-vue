@@ -12,8 +12,8 @@
             v-model="todo.description"
           />
           <button
-            class="form-button"
-            style="background-color: #5bcf67"
+            class="form-button green-button"
+            style="font-size: 18px; margin-top: 1px"
           >
             <font-awesome-icon icon="fa-solid fa-plus" />
           </button>
@@ -41,17 +41,20 @@
       :todos="this.todos"
       @clear="clearTodos"
     />
+    <app-undo-delete />
   </div>
 </template>
 
 <script>
 import AppTodo from './components/Todo'
 import AppClearList from './components/ClearList'
+import AppUndoDelete from './components/UndoDelete'
 
 export default {
   components: {
     AppTodo,
-    AppClearList
+    AppClearList,
+    AppUndoDelete
   },
   data () {
     return {

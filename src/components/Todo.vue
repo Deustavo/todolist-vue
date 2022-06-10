@@ -10,16 +10,15 @@
     </div>
     <div class="todo-options" :id="`todo-options${this.todo.id}`">
       <button
-        class="todo-button"
-        style="background-color: #24b5fa; font-size: 16px"
+        class="todo-button blue-button"
+        style="font-size: 16px"
         v-show="!todo.checked"
         @click="$emit('edit', todo)"
       >
         <font-awesome-icon icon="fa-solid fa-pencil" />
       </button>
       <button
-        class="todo-button"
-        style="background-color: #f84748"
+        class="todo-button red-button"
         v-show="!todo.checked"
         @click="$emit('remove', todo)"
       >
@@ -27,7 +26,7 @@
       </button>
       <button
         class="todo-button"
-        :style="this.rightButtonStyle"
+        :class="[this.rightButtonStyle]"
         @click="$emit('toggle', todo)"
       >
         <font-awesome-icon v-if="todo.checked" style="font-size: 18px" icon="fa-solid fa-rotate-left" />
@@ -66,11 +65,11 @@ export default {
     },
 
     /**
-     * Retorna o estilo do botão mais a direita do todo
-     * @return {object}
+     * Retorna a classe de estilo do botão mais a direita do todo
+     * @return {string}
      */
     rightButtonStyle () {
-      return { backgroundColor: this.todo.checked ? '#ffc83d' : '#5bcf67' }
+      return this.todo.checked ? 'yellow-button' : 'green-button'
     }
   }
 }

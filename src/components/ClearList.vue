@@ -2,8 +2,7 @@
   <div>
       <button
         v-show="this.todos.length > 0 && !confirmClear"
-        class="form-button clear-button"
-        style="background-color: #ffc83d"
+        class="form-button clear-button yellow-button"
         @click="setConfirmClear(true)"
       >
         Limpar lista
@@ -13,15 +12,13 @@
           <p class="title-confirm-clear">Deseja excluir todos os itens da lista?</p>
           <div>
             <button
-              class="form-button"
-              style="background-color: #f84748"
+              class="form-button red-button"
               @click="setConfirmClear(false)"
             >
               <font-awesome-icon icon="fa-solid fa-xmark" />
             </button>
             <button
-              class="form-button"
-              style="background-color: #5bcf67"
+              class="form-button green-button"
               @click="this.clearTodosAndCloseModal"
             >
               <font-awesome-icon icon="fa-solid fa-check" />
