@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
+import Lottie from 'vue-lottie'
 import '../src/assets/style/buttons.css'
 
 /**
@@ -19,6 +20,11 @@ library.add(faCheck, faPencil, faXmark, faRotateLeft, faPlus)
 
 /* add font awesome icon component */
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+/**
+ * Animações
+ */
+Vue.component('lottie', Lottie)
 
 Vue.config.productionTip = false
 

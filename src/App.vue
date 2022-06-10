@@ -21,10 +21,13 @@
       </form>
     </div>
     <div v-if="todos.length < 1" class="empty-state">
-      <iframe
-        id="check-list-animation"
-        src="https://embed.lottiefiles.com/animation/93061"
-      />
+      <span id="check-list-animation">
+        <lottie
+          :options="defaultOptions"
+          :height="200"
+          :width="200"
+        />
+      </span>
       <span>
         Escreva a cima o nome dos itens que
         deseja adicionar em sua lista
@@ -55,6 +58,7 @@
 import AppTodo from './components/Todo'
 import AppClearList from './components/ClearList'
 import AppUndoDelete from './components/UndoDelete'
+import * as animationCheckList from './assets/animations/check-list.json'
 
 export default {
   components: {
@@ -72,7 +76,8 @@ export default {
       lastDeleted: {
         description: '',
         checked: false
-      }
+      },
+      defaultOptions: { animationData: animationCheckList.default }
     }
   },
 
