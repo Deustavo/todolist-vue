@@ -44,6 +44,7 @@
     border-radius: 50%;
     border: none;
     margin: 0px 0px 0px 12px;
+    transition: all ease-in-out 300ms;
   }
   .checked {
     background-color: black;

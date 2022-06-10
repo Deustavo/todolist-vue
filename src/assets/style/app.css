@@ -24,20 +24,24 @@
     width: 432px;
   }
   .form-input {
-    width: 100%;
-    padding: 8px;
-    margin-right: 8px;
+    width: calc(100% - 80px);
+    padding: 8px 16px;
+    border-radius: 100px;
   }
   .form-button {
-    padding: 10px;
-    border-radius: 4px;
+    margin: 0px 12px 0px 12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
     border: none;
     cursor: pointer;
   }
   .clear-button {
     position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 2vw;
+    /* transform: translateX(-50%); */
+    width: 100px;
+    border-radius: 50px;
     bottom: 20px;
   }
   .title-page {

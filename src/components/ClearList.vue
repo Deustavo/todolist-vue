@@ -3,7 +3,7 @@
       <button
         v-show="this.todos.length > 0 && !confirmClear"
         class="form-button clear-button"
-        style="background-color: #24b5fa"
+        style="background-color: #ffc83d"
         @click="setConfirmClear(true)"
       >
         Limpar lista
@@ -17,14 +17,14 @@
               style="background-color: #f84748"
               @click="setConfirmClear(false)"
             >
-              Cancelar
+              <font-awesome-icon icon="fa-solid fa-xmark" />
             </button>
             <button
               class="form-button"
               style="background-color: #5bcf67"
               @click="this.clearTodosAndCloseModal"
             >
-              Limpar lista
+              <font-awesome-icon icon="fa-solid fa-check" />
             </button>
           </div>
         </div>
