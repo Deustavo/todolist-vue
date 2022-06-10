@@ -1,0 +1,17 @@
+.undo-button {
+    position: fixed;
+    right: 2vw;
+    width: 112px;
+    border-radius: 50px;
+    bottom: 20px;
+    font-weight: bold;
+    margin: 0px 12px;
+    height: 32px;
+    border: none;
+    cursor: pointer;
+    transition: all ease-in-out 300ms;
+}
+
+.hide-undo-button {
+    bottom: -64px !important;
+}

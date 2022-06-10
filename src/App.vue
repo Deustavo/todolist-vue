@@ -41,7 +41,10 @@
       :todos="this.todos"
       @clear="clearTodos"
     />
-    <app-undo-delete />
+    <app-undo-delete
+      :lastDeleted="this.lastDeleted"
+      @restore="addTodo"
+    />
   </div>
 </template>
 
@@ -60,6 +63,10 @@ export default {
     return {
       todos: [],
       todo: {
+        description: '',
+        checked: false
+      },
+      lastDeleted: {
         description: '',
         checked: false
       }
@@ -112,6 +119,11 @@ export default {
         this.todos.push(todo)
         this.todo = { checked: false }
         this.setTodosLocalStorage(this.todos)
+
+        this.lastDeleted = {
+          description: '',
+          checked: false
+        }
       }
     },
 
@@ -137,6 +149,7 @@ export default {
      */
     removeTodo (todo) {
       const index = this.findTodoById(todo.id)
+      this.lastDeleted = this.todos[index]
 
       if (index > -1) {
         this.$delete(this.todos, index)
