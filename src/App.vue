@@ -21,7 +21,10 @@
       </form>
     </div>
     <div v-if="todos.length < 1" class="empty-state">
-      <img src="@/assets/cart.png" />
+      <iframe
+        id="check-list-animation"
+        src="https://embed.lottiefiles.com/animation/93061"
+      />
       <span>
         Escreva a cima o nome dos itens que
         deseja adicionar em sua lista
