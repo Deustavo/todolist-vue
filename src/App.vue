@@ -13,9 +13,9 @@
           />
           <button
             class="form-button"
-            style="background-color: #24b5fa"
+            style="background-color: #5bcf67"
           >
-            Adicionar
+            <font-awesome-icon icon="fa-solid fa-plus" />
           </button>
         </div>
       </form>

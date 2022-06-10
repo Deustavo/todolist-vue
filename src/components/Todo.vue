@@ -27,10 +27,10 @@
       </button>
       <button
         class="todo-button"
-        style="background-color: #5bcf67"
+        :style="this.rightButtonStyle"
         @click="$emit('toggle', todo)"
       >
-        <font-awesome-icon v-if="todo.checked" icon="fa-solid fa-xmark" />
+        <font-awesome-icon v-if="todo.checked" style="font-size: 18px" icon="fa-solid fa-rotate-left" />
         <font-awesome-icon v-else icon="fa-solid fa-check" />
       </button>
     </div>
@@ -63,6 +63,14 @@ export default {
       const todoOptionsWidth = document.getElementById(`todo-options${this.todo.id}`).offsetWidth
 
       return todoTitleWidth + todoOptionsWidth >= todoItemWidth
+    },
+
+    /**
+     * Retorna o estilo do botão mais a direita do todo
+     * @return {object}
+     */
+    rightButtonStyle () {
+      return { backgroundColor: this.todo.checked ? '#ffc83d' : '#5bcf67' }
     }
   }
 }
