@@ -1,7 +1,8 @@
 <template>
   <div class="container-page">
     <div class="container-header">
-      <h1 class="title-page">Lista de compras</h1>
+      <span id="hide"></span>
+      <input id="title-page" class="title-page" v-model="title" />
       <form @submit.prevent="addTodo(todo)">
         <div class="container-input">
           <input
@@ -68,6 +69,7 @@ export default {
   },
   data () {
     return {
+      title: 'Lista de compras',
       todos: [],
       todo: {
         description: '',
@@ -83,6 +85,7 @@ export default {
 
   mounted () {
     this.getLocalstorageTodos()
+    this.getLocalStorageTitle()
   },
 
   methods: {
@@ -96,6 +99,30 @@ export default {
       if (LocalStorageTodos) {
         this.todos = JSON.parse(LocalStorageTodos)
       }
+    },
+
+    /**
+     * Recupera o titulo da página do localstorage
+     * Caso não tenha titulo, restorna ums string
+     * @return {undefined}
+     */
+    getLocalStorageTitle () {
+      const LocalStorageTitlePage = localStorage.getItem('TitlePage')
+
+      if (LocalStorageTitlePage) {
+        this.title = LocalStorageTitlePage
+        return
+      }
+
+      this.title = 'Lista de compras'
+    },
+
+    /**
+     * Atualiza o valor do titulo no localStorage
+     * @return {undefined}
+     */
+    setTitlePage (title) {
+      localStorage.setItem('TitlePage', title)
     },
 
     /**
@@ -183,6 +210,28 @@ export default {
     clearTodos () {
       this.todos = []
       this.setTodosLocalStorage(this.todos)
+    },
+
+    /***/
+    setWidthTitle () {
+      const hide = document.getElementById('hide')
+      const titleṔage = document.getElementById('title-page')
+      hide.textContent = titleṔage.value
+      const widthTitle = hide.offsetWidth > 118 ? '48px' : '56px'
+
+      return (titleṔage.style.fontSize = widthTitle)
+    }
+  },
+
+  watch: {
+    title (value) {
+      if (value.length > 0) {
+        this.setTitlePage(value)
+        this.setWidthTitle()
+      } else {
+        this.title = 'Lista de compras'
+        this.setTitlePage(this.title)
+      }
     }
   }
 }
@@ -190,4 +239,5 @@ export default {
 
 <style>
   @import './assets/style/app.css';
+  @import './assets/style/title.css';
 </style>

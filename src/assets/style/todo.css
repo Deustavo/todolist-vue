@@ -54,7 +54,7 @@
    text-decoration-line: line-through; 
   }
   .checked .todo-title, .checked .todo-arrow {
-    color: #607c3c
+    color: #8b8b8b
   }
   .large-card {
     flex-direction: column;
