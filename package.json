@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --target lib --inline-vue --name todoList src/main.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -16,6 +16,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/vue-fontawesome": "^2.0.6",
+    "@vue/cli-service-global": "^4.5.18",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-lottie": "^0.2.1"
