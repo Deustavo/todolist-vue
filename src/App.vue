@@ -1,8 +1,7 @@
 <template>
   <div class="container-page">
     <div class="container-header">
-      <span id="hide"></span>
-      <input id="title-page" class="title-page" v-model="title" />
+      <h1 class="title-page">Lista de compras</h1>
       <form @submit.prevent="addTodo(todo)">
         <div class="container-input">
           <input
@@ -22,13 +21,7 @@
       </form>
     </div>
     <div v-if="todos.length < 1" class="empty-state">
-      <span id="check-list-animation">
-        <lottie
-          :options="defaultOptions"
-          :height="200"
-          :width="200"
-        />
-      </span>
+      <img src="@/assets/cart.png" />
       <span>
         Escreva a cima o nome dos itens que
         deseja adicionar em sua lista
@@ -59,7 +52,6 @@
 import AppTodo from './components/Todo'
 import AppClearList from './components/ClearList'
 import AppUndoDelete from './components/UndoDelete'
-import * as animationCheckList from './assets/animations/check-list.json'
 
 export default {
   components: {
@@ -69,7 +61,6 @@ export default {
   },
   data () {
     return {
-      title: 'Lista de compras',
       todos: [],
       todo: {
         description: '',
@@ -78,14 +69,12 @@ export default {
       lastDeleted: {
         description: '',
         checked: false
-      },
-      defaultOptions: { animationData: animationCheckList.default }
+      }
     }
   },
 
   mounted () {
     this.getLocalstorageTodos()
-    this.getLocalStorageTitle()
   },
 
   methods: {
@@ -99,30 +88,6 @@ export default {
       if (LocalStorageTodos) {
         this.todos = JSON.parse(LocalStorageTodos)
       }
-    },
-
-    /**
-     * Recupera o titulo da página do localstorage
-     * Caso não tenha titulo, restorna ums string
-     * @return {undefined}
-     */
-    getLocalStorageTitle () {
-      const LocalStorageTitlePage = localStorage.getItem('TitlePage')
-
-      if (LocalStorageTitlePage) {
-        this.title = LocalStorageTitlePage
-        return
-      }
-
-      this.title = 'Lista de compras'
-    },
-
-    /**
-     * Atualiza o valor do titulo no localStorage
-     * @return {undefined}
-     */
-    setTitlePage (title) {
-      localStorage.setItem('TitlePage', title)
     },
 
     /**
@@ -210,28 +175,6 @@ export default {
     clearTodos () {
       this.todos = []
       this.setTodosLocalStorage(this.todos)
-    },
-
-    /***/
-    setWidthTitle () {
-      const hide = document.getElementById('hide')
-      const titleṔage = document.getElementById('title-page')
-      hide.textContent = titleṔage.value
-      const widthTitle = hide.offsetWidth > 118 ? '48px' : '56px'
-
-      return (titleṔage.style.fontSize = widthTitle)
-    }
-  },
-
-  watch: {
-    title (value) {
-      if (value.length > 0) {
-        this.setTitlePage(value)
-        this.setWidthTitle()
-      } else {
-        this.title = 'Lista de compras'
-        this.setTitlePage(this.title)
-      }
     }
   }
 }
@@ -239,5 +182,4 @@ export default {
 
 <style>
   @import './assets/style/app.css';
-  @import './assets/style/title.css';
 </style>
