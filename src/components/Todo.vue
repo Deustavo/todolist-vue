@@ -5,7 +5,7 @@
     class="todo-item"
   >
     <div class="todo-text">
-      <span class="todo-arrow" style="margin: 0px 12px 0px 0px">&#8594;</span>
+      <span class="todo-arrow drag-handle"><font-awesome-icon icon="fa-solid fa-grip-vertical" /></span>
       <p :id="`todo-title${todo.id}`" class="todo-title">{{ todo.description }}</p>
     </div>
     <div class="todo-options" :id="`todo-options${todo.id}`">
@@ -17,15 +17,6 @@
         @click="$emit('edit', todo)"
       >
         <font-awesome-icon icon="fa-solid fa-pencil" />
-      </button>
-      </transition>
-      <transition name="pop">
-      <button
-        class="todo-button red-button"
-        v-show="!todo.checked"
-        @click="$emit('remove', todo)"
-      >
-        <font-awesome-icon icon="fa-solid fa-xmark" />
       </button>
       </transition>
       <button

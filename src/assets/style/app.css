@@ -240,12 +240,20 @@
   .container-todo-list {
     position: relative;
   }
+  /* os outros itens deslizam para o novo lugar ao entrar, sair ou reordenar */
+  .item-move, .item-enter-active, .item-leave-active {
+    transition: all ease-in-out 300ms;
+  }
+  /* o item arrastado segue o dedo sem atraso */
+  .swipe-row.dragging {
+    transition: none;
+  }
   .item-enter-from, .item-leave-to {
     opacity: 0;
     transform: translateX(-30px);
   }
   /* sai do fluxo para os outros itens deslizarem; a largura é fixada no before-leave */
-  .item-leave-active {
+  .container-todo-list > .item-leave-active {
     position: absolute;
     box-sizing: border-box;
     max-width: none;
@@ -257,6 +265,13 @@
   }
   @keyframes flash-green {
     50% { color: rgb(91 207 103); }
+  }
+  /* pisca vermelho depois que a modal de exclusão fecha, e então o item é excluído */
+  .flash-red {
+    animation: flash-red 400ms ease-in-out 300ms;
+  }
+  @keyframes flash-red {
+    50% { background-color: rgb(248 71 72); }
   }
 
 .list-menu-toast {
@@ -270,4 +285,39 @@
   background: #222;
   color: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, .4);
+}
+
+/* arrastar para reordenar (pela alça) e para o lado para excluir */
+.swipe-row {
+  position: relative;
+  margin: 8px 0px;
+  user-select: none;
+}
+.swipe-row > .todo-item {
+  position: relative;
+  margin: 0px;
+  touch-action: pan-y;
+}
+.swipe-row > .swipe-delete {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 24px;
+  border-radius: 8px;
+  box-shadow: none;
+  font-size: 18px;
+}
+.drag-handle {
+  margin: 0px 12px 0px 0px;
+  padding: 8px 8px 8px 0px;
+  cursor: grab;
+  touch-action: none;
+}
+.dragging {
+  z-index: 1;
+}
+.dragging > .todo-item {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .7);
 }

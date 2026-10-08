@@ -27,20 +27,32 @@
       <img src="@/assets/cart.png" />
       <span>Clique no + para criar sua primeira lista</span>
     </div>
-    <transition-group v-else tag="div" name="item" class="container-todo-list" @before-leave="el => (el.style.width = el.offsetWidth + 'px')">
-      <div
-        v-for="l in lists"
-        :key="l.id"
-        class="todo-item list-card"
-        @click="openList(l.id)"
-      >
-        <div class="todo-text">
-          <span class="todo-arrow" style="margin: 0px 12px 0px 0px">&#8594;</span>
-          <p class="todo-title">{{ l.name }}</p>
+    <transition-group v-else v-sortable="moveList" tag="div" name="item" class="container-todo-list" @before-leave="el => (el.style.width = el.offsetWidth + 'px')">
+      <div v-for="l in lists" :key="l.id" class="swipe-row">
+        <span class="swipe-delete red-button"><font-awesome-icon icon="fa-solid fa-trash" /></span>
+        <div
+          v-swipe="() => (deletingList = l)"
+          class="todo-item list-card"
+          :class="{ 'flash-red': flashingList === l }"
+          @click="openList(l.id)"
+          @animationend.self="flashingList === l && deleteList(l.id)"
+        >
+          <div class="todo-text">
+            <span class="todo-arrow drag-handle"><font-awesome-icon icon="fa-solid fa-grip-vertical" /></span>
+            <p class="todo-title">{{ l.name }}</p>
+          </div>
+          <span class="list-count">{{ l.todos.length }}</span>
         </div>
-        <span class="list-count">{{ l.todos.length }}</span>
       </div>
     </transition-group>
+    </transition>
+    <transition name="modal">
+    <app-confirm
+      v-if="deletingList"
+      :message="`Deseja excluir a lista ${deletingList.name}?`"
+      @confirm="flashingList = deletingList; deletingList = null"
+      @close="deletingList = null"
+    />
     </transition>
   </div>
   </transition>
@@ -48,15 +60,19 @@
 
 <script>
 import AppList from './components/List.vue'
+import AppConfirm from './components/Confirm.vue'
 
 export default {
   components: {
-    AppList
+    AppList,
+    AppConfirm
   },
   data () {
     return {
       lists: [],
-      currentListId: null
+      currentListId: null,
+      deletingList: null,
+      flashingList: null
     }
   },
 
@@ -162,13 +178,25 @@ export default {
     },
 
     /**
-     * Exclui a lista aberta e volta para a tela principal
+     * Exclui a lista (por padrão a aberta) e volta para a tela principal
+     * @param {number} id
      * @return {undefined}
      */
-    deleteList () {
-      this.lists = this.lists.filter(l => l.id !== this.currentListId)
+    deleteList (id = this.currentListId) {
+      this.lists = this.lists.filter(l => l.id !== id)
       this.setListsLocalStorage()
       this.openList(null)
+    },
+
+    /**
+     * Move a lista de uma posição para outra
+     * @param {number} from
+     * @param {number} to
+     * @return {undefined}
+     */
+    moveList (from, to) {
+      this.lists.splice(to, 0, ...this.lists.splice(from, 1))
+      this.setListsLocalStorage()
     },
 
     /**

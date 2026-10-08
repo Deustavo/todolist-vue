@@ -43,15 +43,18 @@
         deseja adicionar em sua lista
       </span>
     </div>
-    <transition-group v-else tag="div" name="item" class="container-todo-list" @before-leave="el => (el.style.width = el.offsetWidth + 'px')">
-      <app-todo
-        v-for="t in todos.slice().reverse()"
-        :key="t.id"
-        :todo="t"
-        @toggle="toggleTodo"
-        @remove="removeTodo"
-        @edit="editTodo"
-      />
+    <transition-group v-else v-sortable="moveTodo" tag="div" name="item" class="container-todo-list" @before-leave="el => (el.style.width = el.offsetWidth + 'px')">
+      <div v-for="t in todos.slice().reverse()" :key="t.id" class="swipe-row">
+        <span class="swipe-delete red-button"><font-awesome-icon icon="fa-solid fa-trash" /></span>
+        <app-todo
+          v-swipe="() => (deletingTodo = t)"
+          :class="{ 'flash-red': flashingTodo === t }"
+          @animationend.self="flashingTodo === t && removeTodo(t)"
+          :todo="t"
+          @toggle="toggleTodo"
+          @edit="editTodo"
+        />
+      </div>
     </transition-group>
     </transition>
     <app-clear-list
@@ -62,6 +65,14 @@
       :lastDeleted="lastDeleted"
       @restore="addTodo"
     />
+    <transition name="modal">
+    <app-confirm
+      v-if="deletingTodo"
+      :message="`Deseja excluir ${deletingTodo.description}?`"
+      @confirm="flashingTodo = deletingTodo; deletingTodo = null"
+      @close="deletingTodo = null"
+    />
+    </transition>
     <transition name="modal">
     <app-edit-list-name
       v-if="editingName"
@@ -79,6 +90,7 @@ import AppClearList from './ClearList.vue'
 import AppUndoDelete from './UndoDelete.vue'
 import AppEditListName from './EditListName.vue'
 import AppListMenu from './ListMenu.vue'
+import AppConfirm from './Confirm.vue'
 
 export default {
   name: 'AppList',
@@ -87,7 +99,8 @@ export default {
     AppClearList,
     AppUndoDelete,
     AppEditListName,
-    AppListMenu
+    AppListMenu,
+    AppConfirm
   },
   props: {
     list: { type: Object, required: true }
@@ -97,6 +110,8 @@ export default {
       todos: this.list.todos,
       editingName: false,
       nameSaved: false,
+      deletingTodo: null,
+      flashingTodo: null,
       todo: {
         description: '',
         checked: false
@@ -196,6 +211,18 @@ export default {
       this.todo.description = localTodo.description
       this.removeTodo(localTodo)
       document.getElementById('form-input').focus()
+    },
+
+    /**
+     * Move o item de uma posição para outra (posições na ordem exibida, que é invertida)
+     * @param {number} from
+     * @param {number} to
+     * @return {undefined}
+     */
+    moveTodo (from, to) {
+      const last = this.todos.length - 1
+      this.todos.splice(last - to, 0, ...this.todos.splice(last - from, 1))
+      this.setTodosLocalStorage(this.todos)
     },
 
     /**
