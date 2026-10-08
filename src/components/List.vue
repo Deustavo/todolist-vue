@@ -21,6 +21,7 @@
         <div class="container-input">
           <input
             id="form-input"
+            ref="input"
             class="form-input"
             type="text"
             placeholder="Nome do item" maxlength="100"
@@ -49,9 +50,9 @@
         <app-todo
           v-swipe="() => (deletingTodo = t)"
           v-longpress="() => selected.includes(t.id) || selected.push(t.id)"
-          :class="{ 'flash-red': flashingTodo === t, 'flash-green-card': editedTodoId === t.id, selected: selected.includes(t.id) }"
+          :class="{ 'flash-red': flashingTodo === t, 'flash-green-card': editedTodoId === t.id, 'swipe-hint': hintTodoId === t.id, selected: selected.includes(t.id) }"
           @click.capture="selected.length && toggleSelected($event, t.id)"
-          @animationend.self="flashingTodo === t ? removeTodo(t) : (editedTodoId = null)"
+          @animationend.self="flashingTodo === t ? removeTodo(t) : (editedTodoId = hintTodoId = null)"
           :todo="t"
           @toggle="toggleTodo"
           @edit="editingTodo = $event"
@@ -73,7 +74,8 @@
     <transition name="modal">
     <app-confirm
       v-if="deletingTodo"
-      :message="`Deseja excluir ${deletingTodo.description}?`"
+      :message="'Deseja excluir'"
+      :name="deletingTodo.description"
       @confirm="flashingTodo = deletingTodo; deletingTodo = null"
       @close="deletingTodo = null"
     />
@@ -125,6 +127,7 @@ export default {
       flashingTodo: null,
       editingTodo: null,
       editedTodoId: null,
+      hintTodoId: null,
       selected: [],
       confirmBulkDelete: false,
       todo: {
@@ -132,6 +135,11 @@ export default {
         checked: false
       }
     }
+  },
+
+  mounted () {
+    // lista nova (vazia) já abre pronta para digitar
+    if (!this.todos.length) this.$refs.input.focus({ preventScroll: true })
   },
 
   methods: {
@@ -172,6 +180,8 @@ export default {
     addTodo (todo) {
       if (todo?.description?.trimStart().length > 0) {
         todo.id = Date.now()
+        // primeiro item da lista: mostra como arrastar para excluir
+        if (!this.todos.length) this.hintTodoId = todo.id
         this.todos.push(todo)
         this.todo = { checked: false }
         this.setTodosLocalStorage(this.todos)

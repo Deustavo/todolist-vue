@@ -63,7 +63,8 @@
     <transition name="modal">
     <app-confirm
       v-if="deletingList"
-      :message="`Deseja excluir a lista ${deletingList.name}?`"
+      :message="'Deseja excluir a lista'"
+      :name="deletingList.name"
       @confirm="flashingList = deletingList; deletingList = null"
       @close="deletingList = null"
     />

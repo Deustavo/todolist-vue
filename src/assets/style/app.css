@@ -282,6 +282,14 @@
   .flash-red {
     animation: flash-red 400ms ease-in-out 300ms;
   }
+  /* primeiro item da lista: desliza para a esquerda mostrando a lixeira */
+  .swipe-hint {
+    animation: swipe-hint 1600ms ease-in-out 700ms;
+  }
+  @keyframes swipe-hint {
+    30%, 55% { transform: translateX(-90px); }
+    85%, 100% { transform: translateX(0); }
+  }
   @keyframes flash-red {
     50% { background-color: rgb(248 71 72); }
   }
