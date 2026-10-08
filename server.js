@@ -11,18 +11,53 @@ const DB = join(ROOT, 'data', 'links.json')
 const MAX_BODY = 20000
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.ico': 'image/x-icon', '.svg': 'image/svg+xml' }
 
-// ponytail: arquivo JSON reescrito a cada link novo, trocar por SQLite se o volume crescer
+// Em produção (Vercel) o disco é efêmero: usa Upstash Redis via REST se configurado
+const REDIS_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
+const REDIS_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
+
+// ponytail: arquivo JSON reescrito a cada link novo, só para dev/servidor próprio
 let links = {}
 try { links = JSON.parse(await readFile(DB, 'utf8')) } catch {}
 
 /**
- * Gera um código curto aleatório que ainda não existe
- * @return {string}
+ * Executa um comando no Redis
+ * @return {Promise<any>}
  */
-function newCode () {
+async function redis (...command) {
+  const res = await fetch(REDIS_URL, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${REDIS_TOKEN}` },
+    body: JSON.stringify(command)
+  })
+  if (!res.ok) throw new Error('redis')
+  return (await res.json()).result
+}
+
+/**
+ * Busca o caminho de um código curto
+ * @return {Promise<string|null>}
+ */
+async function getLink (code) {
+  if (REDIS_URL) return redis('GET', `link:${code}`)
+  return Object.hasOwn(links, code) ? links[code] : null
+}
+
+/**
+ * Salva o caminho com um código curto aleatório novo
+ * @return {Promise<string>} código
+ */
+async function saveLink (path) {
   let code
   do code = randomBytes(6).toString('base64url').slice(0, 7)
-  while (links[code])
+  while (await getLink(code))
+
+  if (REDIS_URL) {
+    await redis('SET', `link:${code}`, path)
+  } else {
+    links[code] = path
+    await mkdir(join(DB, '..'), { recursive: true })
+    await writeFile(DB, JSON.stringify(links))
+  }
   return code
 }
 
@@ -55,10 +90,7 @@ export async function shortener (req, res) {
       const { path } = JSON.parse(await readBody(req))
       if (typeof path !== 'string' || !path.startsWith('/?')) throw new Error('invalid')
 
-      const code = newCode()
-      links[code] = path
-      await mkdir(join(DB, '..'), { recursive: true })
-      await writeFile(DB, JSON.stringify(links))
+      const code = await saveLink(path)
       res.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify({ code }))
     } catch {
       res.writeHead(400).end()
@@ -66,10 +98,10 @@ export async function shortener (req, res) {
     return true
   }
 
-  // Redireciona link curto
-  const short = pathname.match(/^\/s\/([\w-]+)$/)
+  // Redireciona link curto (na Vercel chega como /api/s/:code via rewrite)
+  const short = pathname.match(/^(?:\/api)?\/s\/([\w-]+)$/)
   if (short) {
-    const target = Object.hasOwn(links, short[1]) && links[short[1]]
+    const target = await getLink(short[1]).catch(() => null)
     res.writeHead(target ? 302 : 404, target ? { Location: target } : {}).end()
     return true
   }
