@@ -28,7 +28,7 @@
           />
           <button
             class="form-button green-button"
-            style="font-size: 18px; margin-top: 1px"
+            style="font-size: 18px"
           >
             <font-awesome-icon icon="fa-solid fa-plus" />
           </button>

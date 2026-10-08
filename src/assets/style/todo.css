@@ -4,7 +4,7 @@
     color: white;
     display: flex;
     align-items: center;
-    padding: 0px 12px;
+    padding: 12px;
     margin: 8px 0px;
     border-radius: 8px;
     transition: all ease-in-out 300ms;
@@ -29,8 +29,9 @@
     margin: 0px;
   }
   .todo-options {
-    width: min-content;
-    margin: 12px 0px;
+    /* reserva espaço pros 2 botões: ao concluir o lápis some e o texto não pode reflowar */
+    min-width: 88px;
+    justify-content: flex-end;
     display: flex;
   }
   .todo-button {
@@ -58,9 +59,6 @@
   }
   .large-card {
     flex-direction: column;
-  }
-  .large-card .todo-text {
-    margin-top: 12px;
   }
   .large-card .todo-options {
     width: 100%;
