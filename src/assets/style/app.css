@@ -36,15 +36,6 @@
     border: none;
     cursor: pointer;
   }
-  .clear-button {
-    position: fixed;
-    left: 2vw;
-    /* transform: translateX(-50%); */
-    width: 112px;
-    border-radius: 50px;
-    bottom: 20px;
-    font-weight: bold;
-  }
   .title-page {
     color: white;
     font-size: 56px;
@@ -53,7 +44,8 @@
   .container-todo-list {
     margin: 8px 0px 72px 0px;
     max-height: calc(100vh);
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     scrollbar-width: thin;
     scrollbar-color: #333 #000;
   }
@@ -326,4 +318,30 @@
 }
 .dragging > .todo-item {
   box-shadow: 0 8px 24px rgba(0, 0, 0, .7);
+}
+
+/* seleção para exclusão em massa: segurar o card marca */
+.swipe-row > .todo-item {
+  -webkit-touch-callout: none;
+}
+/* borda por dentro: por fora a lista (overflow) corta as laterais */
+.todo-item.selected {
+  box-shadow: inset 0 0 0 2px rgb(36 181 250);
+}
+.bulk-delete-button {
+  position: fixed;
+  right: 2vw;
+  bottom: 20px;
+  z-index: 1;
+  width: 112px;
+  height: 32px;
+  margin: 0px 12px;
+  border: none;
+  border-radius: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all ease-in-out 300ms;
+}
+.hide-bulk-delete {
+  bottom: -64px;
 }

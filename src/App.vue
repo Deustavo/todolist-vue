@@ -32,8 +32,10 @@
         <span class="swipe-delete red-button"><font-awesome-icon icon="fa-solid fa-trash" /></span>
         <div
           v-swipe="() => (deletingList = l)"
+          v-longpress="() => selected.includes(l.id) || selected.push(l.id)"
           class="todo-item list-card"
-          :class="{ 'flash-red': flashingList === l }"
+          :class="{ 'flash-red': flashingList === l, selected: selected.includes(l.id) }"
+          @click.capture="selected.length && toggleSelected($event, l.id)"
           @click="openList(l.id)"
           @animationend.self="flashingList === l && deleteList(l.id)"
         >
@@ -45,6 +47,17 @@
         </div>
       </div>
     </transition-group>
+    </transition>
+    <button class="bulk-delete-button red-button" :class="{ 'hide-bulk-delete': !selected.length }" @click="confirmBulkDelete = true">
+      Excluir
+    </button>
+    <transition name="modal">
+    <app-confirm
+      v-if="confirmBulkDelete"
+      :message="`Deseja excluir ${selected.length} ${selected.length > 1 ? 'listas' : 'lista'}?`"
+      @confirm="deleteSelected"
+      @close="confirmBulkDelete = false"
+    />
     </transition>
     <transition name="modal">
     <app-confirm
@@ -72,7 +85,9 @@ export default {
       lists: [],
       currentListId: null,
       deletingList: null,
-      flashingList: null
+      flashingList: null,
+      selected: [],
+      confirmBulkDelete: false
     }
   },
 
@@ -186,6 +201,29 @@ export default {
       this.lists = this.lists.filter(l => l.id !== id)
       this.setListsLocalStorage()
       this.openList(null)
+    },
+
+    /**
+     * Em modo de seleção, o clique marca/desmarca a lista em vez de abrir
+     * @param {Event} e
+     * @param {number} id
+     * @return {undefined}
+     */
+    toggleSelected (e, id) {
+      e.stopPropagation()
+      const index = this.selected.indexOf(id)
+      index > -1 ? this.selected.splice(index, 1) : this.selected.push(id)
+    },
+
+    /**
+     * Exclui todas as listas selecionadas
+     * @return {undefined}
+     */
+    deleteSelected () {
+      this.lists = this.lists.filter(l => !this.selected.includes(l.id))
+      this.setListsLocalStorage()
+      this.selected = []
+      this.confirmBulkDelete = false
     },
 
     /**

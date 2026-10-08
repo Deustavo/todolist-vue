@@ -48,7 +48,9 @@
         <span class="swipe-delete red-button"><font-awesome-icon icon="fa-solid fa-trash" /></span>
         <app-todo
           v-swipe="() => (deletingTodo = t)"
-          :class="{ 'flash-red': flashingTodo === t, 'flash-green-card': editedTodoId === t.id }"
+          v-longpress="() => selected.includes(t.id) || selected.push(t.id)"
+          :class="{ 'flash-red': flashingTodo === t, 'flash-green-card': editedTodoId === t.id, selected: selected.includes(t.id) }"
+          @click.capture="selected.length && toggleSelected($event, t.id)"
           @animationend.self="flashingTodo === t ? removeTodo(t) : (editedTodoId = null)"
           :todo="t"
           @toggle="toggleTodo"
@@ -57,14 +59,17 @@
       </div>
     </transition-group>
     </transition>
-    <app-clear-list
-      :todos="todos"
-      @clear="clearTodos"
+    <button class="bulk-delete-button red-button" :class="{ 'hide-bulk-delete': !selected.length }" @click="confirmBulkDelete = true">
+      Excluir
+    </button>
+    <transition name="modal">
+    <app-confirm
+      v-if="confirmBulkDelete"
+      :message="`Deseja excluir ${selected.length} ${selected.length > 1 ? 'itens' : 'item'}?`"
+      @confirm="removeSelected"
+      @close="confirmBulkDelete = false"
     />
-    <app-undo-delete
-      :lastDeleted="lastDeleted"
-      @restore="addTodo"
-    />
+    </transition>
     <transition name="modal">
     <app-confirm
       v-if="deletingTodo"
@@ -96,8 +101,6 @@
 
 <script>
 import AppTodo from './Todo.vue'
-import AppClearList from './ClearList.vue'
-import AppUndoDelete from './UndoDelete.vue'
 import AppEditListName from './EditListName.vue'
 import AppListMenu from './ListMenu.vue'
 import AppConfirm from './Confirm.vue'
@@ -106,8 +109,6 @@ export default {
   name: 'AppList',
   components: {
     AppTodo,
-    AppClearList,
-    AppUndoDelete,
     AppEditListName,
     AppListMenu,
     AppConfirm
@@ -124,11 +125,9 @@ export default {
       flashingTodo: null,
       editingTodo: null,
       editedTodoId: null,
+      selected: [],
+      confirmBulkDelete: false,
       todo: {
-        description: '',
-        checked: false
-      },
-      lastDeleted: {
         description: '',
         checked: false
       }
@@ -176,11 +175,6 @@ export default {
         this.todos.push(todo)
         this.todo = { checked: false }
         this.setTodosLocalStorage(this.todos)
-
-        this.lastDeleted = {
-          description: '',
-          checked: false
-        }
       }
     },
 
@@ -206,7 +200,6 @@ export default {
      */
     removeTodo (todo) {
       const index = this.findTodoById(todo.id)
-      this.lastDeleted = this.todos[index]
 
       if (index > -1) {
         this.todos.splice(index, 1)
@@ -243,12 +236,26 @@ export default {
     },
 
     /**
-     * Limpa a lista de todos
+     * Em modo de seleção, o clique marca/desmarca o item em vez de acionar os botões
+     * @param {Event} e
+     * @param {number} id
      * @return {undefined}
      */
-    clearTodos () {
-      this.todos = []
+    toggleSelected (e, id) {
+      e.stopPropagation()
+      const index = this.selected.indexOf(id)
+      index > -1 ? this.selected.splice(index, 1) : this.selected.push(id)
+    },
+
+    /**
+     * Exclui todos os itens selecionados
+     * @return {undefined}
+     */
+    removeSelected () {
+      this.todos = this.todos.filter(t => !this.selected.includes(t.id))
       this.setTodosLocalStorage(this.todos)
+      this.selected = []
+      this.confirmBulkDelete = false
     }
   }
 }

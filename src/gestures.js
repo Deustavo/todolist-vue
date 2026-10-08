@@ -121,3 +121,41 @@ export const swipe = {
     el._onSwipe = binding.value
   }
 }
+
+const LONGPRESS_DELAY = 500
+
+/**
+ * v-longpress="fn": segurar o card parado chama fn (ex: selecionar)
+ */
+export const longpress = {
+  mounted (el, binding) {
+    el._onLongpress = binding.value
+    // no celular, segurar abriria o menu do navegador
+    el.addEventListener('contextmenu', e => e.preventDefault())
+
+    el.addEventListener('pointerdown', e => {
+      if (e.button !== 0 || e.target.closest('button, .drag-handle')) return
+      const x0 = e.clientX
+      const y0 = e.clientY
+      let fired = false
+      const timer = setTimeout(() => {
+        fired = true
+        el._onLongpress()
+      }, LONGPRESS_DELAY)
+
+      track(e => {
+        if (Math.abs(e.clientX - x0) > 10 || Math.abs(e.clientY - y0) > 10) clearTimeout(timer)
+      }, () => {
+        clearTimeout(timer)
+        if (!fired) return
+        // o clique que vem ao soltar não deve desmarcar o item recém selecionado
+        const block = e => e.stopPropagation()
+        window.addEventListener('click', block, true)
+        setTimeout(() => window.removeEventListener('click', block, true))
+      })
+    })
+  },
+  updated (el, binding) {
+    el._onLongpress = binding.value
+  }
+}

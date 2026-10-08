@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import './assets/style/buttons.css'
-import { sortable, swipe } from './gestures.js'
+import { sortable, swipe, longpress } from './gestures.js'
 
 /**
  * Icones
@@ -16,4 +16,5 @@ createApp(App)
   .component('font-awesome-icon', FontAwesomeIcon)
   .directive('sortable', sortable)
   .directive('swipe', swipe)
+  .directive('longpress', longpress)
   .mount('#app')
