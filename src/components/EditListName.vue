@@ -6,6 +6,7 @@
         ref="input"
         class="form-input edit-name-input"
         type="text"
+        autocomplete="off"
         :maxlength="maxlength"
         v-model="newName"
       />

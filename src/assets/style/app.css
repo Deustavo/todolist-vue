@@ -221,7 +221,7 @@
     opacity: 0;
   }
   .modal-enter-from .container-confirm-clear, .modal-leave-to .container-confirm-clear {
-    transform: translate(-50%, calc(-50% + 40px));
+    transform: translate(-50%, 40px);
   }
   .slide-left-enter-active, .slide-left-leave-active,
   .slide-right-enter-active, .slide-right-leave-active {

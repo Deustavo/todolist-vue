@@ -24,6 +24,7 @@
             ref="input"
             class="form-input"
             type="text"
+            autocomplete="off"
             placeholder="Nome do item" maxlength="100"
             v-model="todo.description"
           />
