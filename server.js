@@ -29,7 +29,7 @@ async function redis (...command) {
     headers: { Authorization: `Bearer ${REDIS_TOKEN}` },
     body: JSON.stringify(command)
   })
-  if (!res.ok) throw new Error('redis')
+  if (!res.ok) throw new Error(`redis ${res.status}: ${await res.text()}`)
   return (await res.json()).result
 }
 
@@ -66,6 +66,8 @@ async function saveLink (path) {
  * @return {Promise<string>}
  */
 function readBody (req) {
+  // Na Vercel o corpo pode já ter sido lido e parseado pelo runtime
+  if (req.body !== undefined) return Promise.resolve(typeof req.body === 'string' ? req.body : JSON.stringify(req.body))
   return new Promise((resolve, reject) => {
     let body = ''
     req.on('data', chunk => {
@@ -86,14 +88,21 @@ export async function shortener (req, res) {
 
   // Cria link curto. Só aceita caminhos de importação do próprio app (evita open redirect)
   if (req.method === 'POST' && pathname === '/api/shorten') {
+    let path
     try {
-      const { path } = JSON.parse(await readBody(req))
-      if (typeof path !== 'string' || !path.startsWith('/?')) throw new Error('invalid')
+      ({ path } = JSON.parse(await readBody(req)))
+    } catch {}
+    if (typeof path !== 'string' || !path.startsWith('/?')) {
+      res.writeHead(400).end()
+      return true
+    }
 
+    try {
       const code = await saveLink(path)
       res.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify({ code }))
-    } catch {
-      res.writeHead(400).end()
+    } catch (error) {
+      console.error('shorten:', error)
+      res.writeHead(500).end()
     }
     return true
   }
