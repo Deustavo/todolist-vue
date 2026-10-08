@@ -241,3 +241,16 @@
   @keyframes flash-green {
     50% { color: rgb(91 207 103); }
   }
+
+.list-menu-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: #222;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .4);
+}

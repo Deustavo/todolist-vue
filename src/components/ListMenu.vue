@@ -38,21 +38,8 @@
       </div>
     </transition>
 
-    <transition name="modal">
-      <div v-if="shareLink" class="container-confirm-clear-background" @click.self="shareLink = ''">
-        <div class="container-confirm-clear">
-          <p class="title-confirm-clear">{{ copied ? 'Link copiado!' : 'Envie este link' }}</p>
-          <input ref="link" class="form-input edit-name-input" readonly :value="shareLink" @focus="$event.target.select()" />
-          <div>
-            <button class="form-button red-button" @click="shareLink = ''">
-              <font-awesome-icon icon="fa-solid fa-xmark" />
-            </button>
-            <button class="form-button green-button" @click="copy">
-              <font-awesome-icon icon="fa-solid fa-copy" />
-            </button>
-          </div>
-        </div>
-      </div>
+    <transition name="fade">
+      <div v-if="toast" class="list-menu-toast">{{ toast }}</div>
     </transition>
   </div>
 </template>
@@ -67,8 +54,7 @@ export default {
     return {
       open: false,
       confirmDelete: false,
-      shareLink: '',
-      copied: false
+      toast: ''
     }
   },
   mounted () {
@@ -81,7 +67,6 @@ export default {
     onKeydown (e) {
       if (e.key !== 'Escape') return
       this.open = this.confirmDelete = false
-      this.shareLink = ''
     },
 
     /**
@@ -105,6 +90,7 @@ export default {
       this.list.todos.forEach(t => params.append('item', t.description))
       const path = `/?${params}`
 
+      let link
       try {
         const res = await fetch('/api/shorten', {
           method: 'POST',
@@ -112,25 +98,19 @@ export default {
           body: JSON.stringify({ path })
         })
         const { code } = await res.json()
-        this.shareLink = `${location.origin}/s/${code}`
+        link = `${location.origin}/s/${code}`
       } catch {
-        this.shareLink = location.origin + path
+        link = location.origin + path
       }
-      this.copied = false
-      this.copy()
-    },
 
-    /**
-     * Copia o link para a área de transferência
-     * @return {undefined}
-     */
-    async copy () {
       try {
-        await navigator.clipboard.writeText(this.shareLink)
-        this.copied = true
+        await navigator.clipboard.writeText(link)
+        this.toast = 'Link copiado!'
       } catch {
-        this.$nextTick(() => this.$refs.link?.select())
+        this.toast = 'Não foi possível copiar o link'
       }
+      clearTimeout(this.toastTimer)
+      this.toastTimer = setTimeout(() => { this.toast = '' }, 2500)
     }
   }
 }
