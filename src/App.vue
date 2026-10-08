@@ -15,6 +15,7 @@
         <h1 class="title-page list-title">Suas listas</h1>
         <button
           class="todo-button green-button"
+          :class="{ 'pulse-button': !lists.length }"
           style="font-size: 18px"
           @click="addList"
         >

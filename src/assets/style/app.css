@@ -345,3 +345,32 @@
 .hide-bulk-delete {
   bottom: -64px;
 }
+
+/* sem nenhuma lista: o + pulsa e solta ondas verdes */
+.pulse-button {
+  position: relative;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+.pulse-button::before,
+.pulse-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgb(91 207 103);
+  animation: pulse-ring 1.6s ease-out infinite;
+  pointer-events: none;
+}
+.pulse-button::after {
+  animation-delay: .8s;
+}
+@keyframes pulse {
+  50% { transform: scale(1.12); }
+}
+@keyframes pulse-ring {
+  from { transform: scale(1); opacity: .8; }
+  to { transform: scale(2.4); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pulse-button, .pulse-button::before, .pulse-button::after { animation: none; }
+}
