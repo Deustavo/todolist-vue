@@ -1,12 +1,12 @@
 <template>
   <div class="container-confirm-clear-background" @click.self="$emit('close')">
     <form class="container-confirm-clear" @submit.prevent="save">
-      <p class="title-confirm-clear">Nome da lista</p>
+      <p class="title-confirm-clear">{{ title }}</p>
       <input
         ref="input"
         class="form-input edit-name-input"
         type="text"
-        maxlength="25"
+        :maxlength="maxlength"
         v-model="newName"
       />
       <div>
@@ -29,7 +29,9 @@
 export default {
   name: 'AppEditListName',
   props: {
-    name: { type: String, required: true }
+    name: { type: String, required: true },
+    title: { type: String, default: 'Nome da lista' },
+    maxlength: { type: Number, default: 25 }
   },
   data () {
     return {

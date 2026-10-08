@@ -261,7 +261,13 @@
   }
   /* pisca verde depois que a modal termina de fechar */
   .flash-green {
-    animation: flash-green 400ms ease-in-out 300ms 2;
+    animation: flash-green 400ms ease-in-out 300ms;
+  }
+  .flash-green-card {
+    animation: flash-green-card 400ms ease-in-out 300ms;
+  }
+  @keyframes flash-green-card {
+    50% { background-color: rgb(91 207 103); }
   }
   @keyframes flash-green {
     50% { color: rgb(91 207 103); }

@@ -48,11 +48,11 @@
         <span class="swipe-delete red-button"><font-awesome-icon icon="fa-solid fa-trash" /></span>
         <app-todo
           v-swipe="() => (deletingTodo = t)"
-          :class="{ 'flash-red': flashingTodo === t }"
-          @animationend.self="flashingTodo === t && removeTodo(t)"
+          :class="{ 'flash-red': flashingTodo === t, 'flash-green-card': editedTodoId === t.id }"
+          @animationend.self="flashingTodo === t ? removeTodo(t) : (editedTodoId = null)"
           :todo="t"
           @toggle="toggleTodo"
-          @edit="editTodo"
+          @edit="editingTodo = $event"
         />
       </div>
     </transition-group>
@@ -71,6 +71,16 @@
       :message="`Deseja excluir ${deletingTodo.description}?`"
       @confirm="flashingTodo = deletingTodo; deletingTodo = null"
       @close="deletingTodo = null"
+    />
+    </transition>
+    <transition name="modal">
+    <app-edit-list-name
+      v-if="editingTodo"
+      title="Nome do item"
+      :maxlength="100"
+      :name="editingTodo.description"
+      @save="saveTodo"
+      @close="editingTodo = null"
     />
     </transition>
     <transition name="modal">
@@ -112,6 +122,8 @@ export default {
       nameSaved: false,
       deletingTodo: null,
       flashingTodo: null,
+      editingTodo: null,
+      editedTodoId: null,
       todo: {
         description: '',
         checked: false
@@ -203,14 +215,19 @@ export default {
     },
 
     /**
-     * Coloca o valor da descrição da todo no input
-     * @param {object} todo informações do item
+     * Salva a nova descrição do item em edição e fecha a modal
+     * @param {string} description nova descrição
      * @return {undefined}
      */
-    editTodo (localTodo) {
-      this.todo.description = localTodo.description
-      this.removeTodo(localTodo)
-      document.getElementById('form-input').focus()
+    saveTodo (description) {
+      const index = this.findTodoById(this.editingTodo.id)
+
+      if (index > -1) {
+        this.todos[index] = { ...this.todos[index], description }
+        this.setTodosLocalStorage(this.todos)
+        this.editedTodoId = this.editingTodo.id
+      }
+      this.editingTodo = null
     },
 
     /**
