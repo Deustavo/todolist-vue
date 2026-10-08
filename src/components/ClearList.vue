@@ -44,7 +44,17 @@ export default {
   props: {
     todos: { type: Array, required: true }
   },
+  mounted () {
+    window.addEventListener('keydown', this.onKeydown)
+  },
+  beforeUnmount () {
+    window.removeEventListener('keydown', this.onKeydown)
+  },
   methods: {
+    onKeydown (e) {
+      if (e.key === 'Escape') this.confirmClear = false
+    },
+
     /**
      * Abre modal para confirmar limpaza da todo list
      * @return {undefined}

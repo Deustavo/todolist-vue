@@ -38,8 +38,16 @@ export default {
   },
   mounted () {
     this.$refs.input.focus()
+    window.addEventListener('keydown', this.onKeydown)
+  },
+  beforeUnmount () {
+    window.removeEventListener('keydown', this.onKeydown)
   },
   methods: {
+    onKeydown (e) {
+      if (e.key === 'Escape') this.$emit('close')
+    },
+
     /**
      * Salva o novo nome caso não esteja vazio
      * @return {undefined}

@@ -54,6 +54,8 @@
     margin: 8px 0px 72px 0px;
     max-height: calc(100vh);
     overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #333 #000;
   }
   .empty-state {
     margin-top: 80px;

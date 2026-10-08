@@ -71,7 +71,19 @@ export default {
       copied: false
     }
   },
+  mounted () {
+    window.addEventListener('keydown', this.onKeydown)
+  },
+  beforeUnmount () {
+    window.removeEventListener('keydown', this.onKeydown)
+  },
   methods: {
+    onKeydown (e) {
+      if (e.key !== 'Escape') return
+      this.open = this.confirmDelete = false
+      this.shareLink = ''
+    },
+
     /**
      * Fecha o dropdown e emite a opção escolhida
      * @param {string} event
