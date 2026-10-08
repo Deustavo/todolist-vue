@@ -1,11 +1,11 @@
 <template>
   <div class="list-menu">
     <button
-      class="todo-button blue-button"
-      style="font-size: 16px"
+      class="todo-button blue-button hamburger"
+      :class="{ 'hamburger-open': open }"
       @click="open = !open"
     >
-      <font-awesome-icon icon="fa-solid fa-bars" />
+      <span /><span /><span />
     </button>
     <div v-if="open" class="list-menu-overlay" @click="open = false" />
     <transition name="fade">
