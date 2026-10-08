@@ -1,5 +1,6 @@
 <template>
-  <transition name="fade" mode="out-in">
+  <!-- abrindo lista: tela sai pra esquerda e lista vem da direita; voltando: o inverso -->
+  <transition :name="currentList ? 'slide-left' : 'slide-right'" mode="out-in">
   <app-list
     v-if="currentList"
     :key="currentList.id"

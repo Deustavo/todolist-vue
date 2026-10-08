@@ -216,6 +216,23 @@
   .modal-enter-from .container-confirm-clear, .modal-leave-to .container-confirm-clear {
     transform: translate(-50%, 40px);
   }
+  .slide-left-enter-active, .slide-left-leave-active,
+  .slide-right-enter-active, .slide-right-leave-active {
+    transition: all ease-in-out 300ms;
+  }
+  /* desloca pouco para o fade ficar visível antes de sair da tela */
+  .slide-left-leave-to, .slide-right-enter-from {
+    opacity: 0;
+    transform: translateX(-30%);
+  }
+  .slide-left-enter-from, .slide-right-leave-to {
+    opacity: 0;
+    transform: translateX(30%);
+  }
+  /* sem scroll na página enquanto a tela desliza */
+  html:has(.slide-left-enter-active, .slide-left-leave-active, .slide-right-enter-active, .slide-right-leave-active) {
+    overflow: hidden;
+  }
   .pop-enter-from, .pop-leave-to {
     opacity: 0;
     transform: scale(0);
