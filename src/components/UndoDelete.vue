@@ -2,7 +2,7 @@
   <div>
     <button
       class="undo-button red-button"
-      :class="{'hide-undo-button': this.hasDeletedItem}"
+      :class="{'hide-undo-button': hasDeletedItem}"
       @click="$emit('restore', lastDeleted)"
     >
       Desfazer
@@ -14,10 +14,7 @@
 export default {
   name: 'AppUndoDelete',
   props: {
-    lastDeleted: {
-      description: '',
-      checked: false
-    }
+    lastDeleted: { type: Object, required: true }
   },
   computed: {
     /**

@@ -1,12 +1,15 @@
 <template>
   <div>
+      <transition name="fade">
       <button
-        v-show="this.todos.length > 0 && !confirmClear"
+        v-show="todos.length > 0 && !confirmClear"
         class="form-button clear-button yellow-button"
         @click="setConfirmClear(true)"
       >
         Limpar lista
       </button>
+      </transition>
+      <transition name="modal">
       <div v-show="confirmClear" class="container-confirm-clear-background">
         <div class="container-confirm-clear">
           <p class="title-confirm-clear">Deseja excluir todos os itens da lista?</p>
@@ -19,13 +22,14 @@
             </button>
             <button
               class="form-button green-button"
-              @click="this.clearTodosAndCloseModal"
+              @click="clearTodosAndCloseModal"
             >
               <font-awesome-icon icon="fa-solid fa-check" />
             </button>
           </div>
         </div>
       </div>
+      </transition>
   </div>
 </template>
 

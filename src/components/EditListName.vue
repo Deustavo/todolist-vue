@@ -1,0 +1,58 @@
+<template>
+  <div class="container-confirm-clear-background" @click.self="$emit('close')">
+    <form class="container-confirm-clear" @submit.prevent="save">
+      <p class="title-confirm-clear">Nome da lista</p>
+      <input
+        ref="input"
+        class="form-input edit-name-input"
+        type="text"
+        maxlength="25"
+        v-model="newName"
+      />
+      <div>
+        <button
+          type="button"
+          class="form-button red-button"
+          @click="$emit('close')"
+        >
+          <font-awesome-icon icon="fa-solid fa-xmark" />
+        </button>
+        <button class="form-button green-button">
+          <font-awesome-icon icon="fa-solid fa-check" />
+        </button>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'AppEditListName',
+  props: {
+    name: { type: String, required: true }
+  },
+  data () {
+    return {
+      newName: this.name
+    }
+  },
+  mounted () {
+    this.$refs.input.focus()
+  },
+  methods: {
+    /**
+     * Salva o novo nome caso não esteja vazio
+     * @return {undefined}
+     */
+    save () {
+      if (this.newName.trim().length > 0) {
+        this.$emit('save', this.newName.trim())
+      }
+    }
+  }
+}
+</script>
+
+<style>
+  @import "../assets/style/clearList.css";
+</style>

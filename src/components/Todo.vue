@@ -1,14 +1,15 @@
 <template>
   <div
-    :id="`todo-item${this.todo.id}`"
-    :class="{checked: todo.checked, 'large-card': this.hasLargeTitle}"
+    :id="`todo-item${todo.id}`"
+    :class="{checked: todo.checked, 'large-card': hasLargeTitle}"
     class="todo-item"
   >
     <div class="todo-text">
       <span class="todo-arrow" style="margin: 0px 12px 0px 0px">&#8594;</span>
       <p :id="`todo-title${todo.id}`" class="todo-title">{{ todo.description }}</p>
     </div>
-    <div class="todo-options" :id="`todo-options${this.todo.id}`">
+    <div class="todo-options" :id="`todo-options${todo.id}`">
+      <transition name="pop">
       <button
         class="todo-button blue-button"
         style="font-size: 16px"
@@ -17,6 +18,8 @@
       >
         <font-awesome-icon icon="fa-solid fa-pencil" />
       </button>
+      </transition>
+      <transition name="pop">
       <button
         class="todo-button red-button"
         v-show="!todo.checked"
@@ -24,13 +27,16 @@
       >
         <font-awesome-icon icon="fa-solid fa-xmark" />
       </button>
+      </transition>
       <button
         class="todo-button"
-        :class="[this.rightButtonStyle]"
+        :class="[rightButtonStyle]"
         @click="$emit('toggle', todo)"
       >
-        <font-awesome-icon v-if="todo.checked" style="font-size: 18px" icon="fa-solid fa-rotate-left" />
-        <font-awesome-icon v-else icon="fa-solid fa-check" />
+        <transition name="pop" mode="out-in">
+          <font-awesome-icon v-if="todo.checked" style="font-size: 18px" icon="fa-solid fa-rotate-left" />
+          <font-awesome-icon v-else icon="fa-solid fa-check" />
+        </transition>
       </button>
     </div>
   </div>
