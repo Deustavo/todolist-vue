@@ -8,6 +8,7 @@
           :class="{ 'list-title-long': list.name.length > 12, 'flash-green': nameSaved }"
           @animationend="nameSaved = false"
           :title="list.name"
+          @click="editingName = true"
         >
           {{ list.name }}
         </h1>
