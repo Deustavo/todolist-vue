@@ -32,6 +32,7 @@
           <button
             class="form-button green-button"
             style="font-size: 18px"
+            @mousedown.prevent
           >
             <font-awesome-icon icon="fa-solid fa-plus" />
           </button>
@@ -188,6 +189,8 @@ export default {
         this.todo = { checked: false }
         this.setTodosLocalStorage(this.todos)
       }
+      // mantém o teclado aberto para o próximo item
+      this.$refs.input.focus({ preventScroll: true })
     },
 
     /**
