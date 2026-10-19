@@ -14,6 +14,16 @@ export default defineConfig({
           if (!(await shortener(req, res))) next()
         })
       }
+    },
+    {
+      // og:image precisa de URL absoluta para aparecer na prévia do link (WhatsApp, Telegram...)
+      name: 'absolute-og-image',
+      transformIndexHtml (html) {
+        const host = process.env.SITE_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL
+        if (!host) return html
+        const origin = host.startsWith('http') ? host : `https://${host}`
+        return html.replace(/(property="og:image"|name="twitter:image") content="\//g, `$1 content="${origin}/`)
+      }
     }
   ],
   resolve: {
