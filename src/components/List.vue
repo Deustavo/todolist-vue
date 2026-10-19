@@ -199,8 +199,13 @@ export default {
       const index = this.findTodoById(todo.id)
 
       if (index > -1) {
-        const checked = !this.todos[index].checked
-        this.todos[index] = { ...this.todos[index], checked }
+        const [item] = this.todos.splice(index, 1)
+        const checked = !item.checked
+        // a exibição é invertida: marcado vai para o fim da lista (início do array),
+        // desmarcado volta para o topo (fim do array)
+        checked
+          ? this.todos.unshift({ ...item, checked })
+          : this.todos.push({ ...item, checked })
         this.setTodosLocalStorage(this.todos)
       }
     },
