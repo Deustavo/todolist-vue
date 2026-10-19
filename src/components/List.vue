@@ -63,6 +63,11 @@
       </div>
     </transition-group>
     </transition>
+    <transition name="fade">
+    <div v-if="longpressHint && todos.length > 1 && !selected.length" class="longpress-tooltip">
+      <strong>Dica:</strong> Aperte e segure para deletar varios itens
+    </div>
+    </transition>
     <button class="bulk-delete-button red-button" :class="{ 'hide-bulk-delete': !selected.length }" @click="confirmBulkDelete = true">
       Excluir
     </button>
@@ -131,6 +136,7 @@ export default {
       editingTodo: null,
       editedTodoId: null,
       hintTodoId: null,
+      longpressHint: false,
       selected: [],
       confirmBulkDelete: false,
       todo: {
@@ -145,7 +151,31 @@ export default {
     if (!this.todos.length) this.$refs.input.focus({ preventScroll: true })
   },
 
+  beforeUnmount () {
+    this.hideLongpressHint()
+  },
+
   methods: {
+    /**
+     * Mostra a dica de seleção múltipla por 10s; qualquer toque/clique na tela esconde antes
+     * @return {undefined}
+     */
+    showLongpressHint () {
+      this.longpressHint = true
+      this.longpressHintTimer = setTimeout(this.hideLongpressHint, 10000)
+      document.addEventListener('pointerdown', this.hideLongpressHint)
+    },
+
+    /**
+     * Esconde a dica de seleção múltipla
+     * @return {undefined}
+     */
+    hideLongpressHint () {
+      this.longpressHint = false
+      clearTimeout(this.longpressHintTimer)
+      document.removeEventListener('pointerdown', this.hideLongpressHint)
+    },
+
     /**
      * Envia a lista atualizada para ser salva
      * @param {array} todos valor da lista atualizado
@@ -185,6 +215,8 @@ export default {
         todo.id = Date.now()
         // primeiro item da lista: mostra como arrastar para excluir
         if (!this.todos.length) this.hintTodoId = todo.id
+        // segundo item: mostra que dá para selecionar vários segurando
+        if (this.todos.length === 1) this.showLongpressHint()
         this.todos.push(todo)
         this.todo = { checked: false }
         this.setTodosLocalStorage(this.todos)

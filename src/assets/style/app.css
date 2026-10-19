@@ -370,6 +370,30 @@
   bottom: -64px;
 }
 
+/* dica de seleção múltipla, logo abaixo dos itens (compensa a margem da lista) */
+.longpress-tooltip {
+  position: relative;
+  margin-top: -60px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: #222;
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .4);
+}
+/* setinha apontando para os itens */
+.longpress-tooltip::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top: 0;
+  border-bottom-color: #222;
+}
+
 /* sem nenhuma lista: o + pulsa e solta ondas verdes */
 .pulse-button {
   position: relative;
