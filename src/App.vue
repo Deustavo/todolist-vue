@@ -99,7 +99,8 @@ export default {
     }
   },
 
-  mounted () {
+  // created (e não mounted) para já renderizar a lista da URL sem animar a transição
+  created () {
     this.getLocalstorageLists()
     this.importFromUrl()
     this.readUrl()
